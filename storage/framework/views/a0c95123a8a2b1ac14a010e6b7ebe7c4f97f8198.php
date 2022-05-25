@@ -1,0 +1,1 @@
+<?php /**PATH /home/jj/Desktop/MrZ/WebVision/AdamG/Admin/resources/views/layouts/back-end/partials/_front-settings.blade.php ENDPATH**/ ?>

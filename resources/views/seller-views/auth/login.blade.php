@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required Meta Tags Always Come First -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Title -->
+    <title>Seller | Login</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="{{asset('public/assets/back-end')}}/css/vendor.min.css">
+    <link rel="stylesheet" href="{{asset('public/assets/back-end')}}/vendor/icon-set/style.css">
+    <!-- CSS Front Template -->
+    <link rel="stylesheet" href="{{asset('public/assets/back-end')}}/css/theme.minc619.css?v=1.0">
+    <link rel="stylesheet" href="{{asset('public/assets/back-end')}}/css/toastr.css">
+</head>
+
+<body style="background: #000">
+<!-- ========== MAIN CONTENT ========== -->
+<main id="content" role="main" class="main" >
+
+    <!-- Content -->
+
+    <br><br><br><br><br>
+    <div class="container py-5 py-sm-7">
+        @php($e_commerce_logo=\App\Model\BusinessSetting::where(['type'=>'company_web_logo'])->first()->value)
+      
+
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-5">
+                <!-- Card -->
+                <div class="card card-lg mb-5" style="box-shadow: 0 0px 23px rgb(229 111 10);background: #000">
+                    <div class="card-body">
+                        <!-- Form -->
+                        <form class="js-validate" action="{{route('seller.auth.login')}}" method="post">
+                            @csrf
+
+
+
+                            <a class="d-flex justify-content-center mb-5" href="javascript:">
+                                    <img class="z-index-2" width="120px" src="{{asset("company/".$e_commerce_logo)}}" alt="Logo"
+                                         onerror="this.src='{{asset('public/assets/back-end/img/400x400/img2.jpg')}}'"
+                                         style="width: 8rem;">
+                            </a>
+
+                            <!-- Form Group -->
+                            <div class="js-form-message form-group">
+                                <label class="input-label" style="color: white" for="signinSrEmail">{{trans('messages.Email') }}</label>
+
+                                <input type="email" style="border-radius: 30px;background: #fff" class="form-control form-control-lg" name="email" id="signinSrEmail"
+                                       tabindex="1" placeholder="email@address.com" aria-label="email@address.com"
+                                       required data-msg="Please enter a valid email address.">
+                            </div>
+                            <!-- End Form Group -->
+
+                            <!-- Form Group -->
+                            <div class="js-form-message form-group">
+                                <label class="input-label" style="color: white" for="signupSrPassword" tabindex="0">
+                                    <span class="d-flex justify-content-between align-items-center">
+                                      {{trans('messages.password')}}
+                                            <a href="{{route('seller.auth.forgot-password')}}">
+                                                {{trans('messages.forgot_password')}}
+                                            </a>
+                                    </span>
+                                </label>
+
+                                <div class="input-group input-group-merge">
+                                    <input type="password" style="border-radius: 30px;background: #fff" class="js-toggle-password form-control form-control-lg"
+                                           name="password" id="signupSrPassword" placeholder="8+ characters required"
+                                           aria-label="8+ characters required" required
+                                           data-msg="Your password is invalid. Please try again."
+                                           data-hs-toggle-password-options='{
+                                                     "target": "#changePassTarget",
+                                            "defaultClass": "tio-hidden-outlined",
+                                            "showClass": "tio-visible-outlined",
+                                            "classChangeTarget": "#changePassIcon"
+                                            }'>
+                                    <div id="changePassTarget" class="input-group-append">
+                                        <a class="input-group-text" href="javascript:">
+                                            <i id="changePassIcon" class="tio-visible-outlined"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Form Group -->
+
+                            <!-- Checkbox -->
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="termsCheckbox"
+                                           name="remember">
+                                    <label class="custom-control-label text-muted" for="termsCheckbox">
+                                        {{trans('messages.remember_me')}}
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- End Checkbox -->
+
+                            <button type="submit" style="background: #ed6400;border-radius: 20px;border: none" class="btn btn-lg btn-block btn-primary">{{trans('messages.login')}}</button>
+                        </form>
+                        <!-- End Form -->
+                    </div>
+
+                </div>
+                <!-- End Card -->
+            </div>
+        </div>
+    </div>
+    <!-- End Content -->
+</main>
+<!-- ========== END MAIN CONTENT ========== -->
+
+
+<!-- JS Implementing Plugins -->
+<script src="{{asset('public/assets/back-end')}}/js/vendor.min.js"></script>
+
+<!-- JS Front -->
+<script src="{{asset('public/assets/back-end')}}/js/theme.min.js"></script>
+<script src="{{asset('public/assets/back-end')}}/js/toastr.js"></script>
+{!! Toastr::message() !!}
+
+@if ($errors->any())
+    <script>
+        @foreach($errors->all() as $error)
+        toastr.error('{{$error}}', Error, {
+            CloseButton: true,
+            ProgressBar: true
+        });
+        @endforeach
+    </script>
+@endif
+
+<!-- JS Plugins Init. -->
+<script>
+    $(document).on('ready', function () {
+        // INITIALIZATION OF SHOW PASSWORD
+        // =======================================================
+        $('.js-toggle-password').each(function () {
+            new HSTogglePassword(this).init()
+        });
+
+        // INITIALIZATION OF FORM VALIDATION
+        // =======================================================
+        $('.js-validate').each(function () {
+            $.HSCore.components.HSValidation.init($(this));
+        });
+    });
+</script>
+
+
+@if(env('APP_MODE')=='demo')
+    <script>
+        function copy_cred() {
+            $('#signinSrEmail').val('test.seller@gmail.com');
+            $('#signupSrPassword').val('12345678');
+            toastr.success('Copied successfully!', 'Success!', {
+                CloseButton: true,
+                ProgressBar: true
+            });
+        }
+    </script>
+@endif
+
+<!-- IE Support -->
+<script>
+    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) document.write('<script src="{{asset('public/assets/admin')}}/vendor/babel-polyfill/polyfill.min.js"><\/script>');
+</script>
+</body>
+</html>
+
